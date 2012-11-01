@@ -24,3 +24,23 @@ Compatibility
 
 - min. version: Contao 2.9.5
 - max. version: Contao 2.11.6
+
+
+CSS Tip
+-------
+
+Adding special css, will show the difference between **mandatory** and **dependent mandatory** form fields.
+
+This is only an example:
+
+	.dependent span.mandatory:after {
+			content: ')';
+	}
+	.dependent span.mandatory:before {
+			content: '(';
+	}
+	.dependent span.mandatory {
+			font-size: 8px;
+			vertical-align: super;
+			color: orange;
+	}
