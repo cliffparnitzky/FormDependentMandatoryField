@@ -3,8 +3,6 @@ Contao DependentMandatoryFormField Extension
 
 Provides an additional option for form field to be defined as dependent mandatory. Field is mendatory if another field is filled / or not.
 
-**!!! PROOF OF CONCEPT !!!**
-
 
 Installation
 ------------
