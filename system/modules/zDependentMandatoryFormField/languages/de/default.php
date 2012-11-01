@@ -30,6 +30,6 @@
 /**
  * Error messages
  */
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'] = 'Es existiert bereits ein Datensatz mit der Kombination der Werte in den Feldern: %s';
- 
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'] = 'Bitte füllen Sie das Feld "%s" aus! Die Vergabe eines Wertes ist Pflicht, weil ein übergeordnetes Feld einen Wert enthält.';
+
 ?>

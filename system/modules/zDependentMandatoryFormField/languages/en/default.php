@@ -30,6 +30,6 @@
 /**
  * Error messages
  */
-$GLOBALS['TL_LANG']['ERR']['duplicateError'] = 'There is already a record with the combination of the values ??in the fields: %s';
- 
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'] = 'Field "%s" must not be empty! Setting a value is mandatory, because a superior field contains a value.';
+
 ?>

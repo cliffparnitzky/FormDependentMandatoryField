@@ -28,10 +28,10 @@
  */
 
 // fields
-$GLOBALS['TL_LANG']['tl_form']['duplicationCheckingActive'] = array('Check duplicates', 'If you choose this option, each record to be stored (in database "Form data"), will be checked, if there is already one with these values.');
-$GLOBALS['TL_LANG']['tl_form']['duplicationCheckingFields'] = array('Key fields', 'Choose the fields of the form, that will represent <u>together</u> the unique key for the duplication checking.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryActive']         = array('Activate dependent mandatory form field', 'Select if this field must contain a value, if one of its superior fields is filled.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFields'] = array('Superior fields', 'Select the fields of the form, which, if they contain a value, let the actual field let be mandatory.');
 
 // legends
-$GLOBALS['TL_LANG']['tl_form']['duplication_legend'] = "(EFG) Duplication checking";
- 
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatory_legend'] = "Dependent mandatory form field";
+
 ?>

@@ -28,7 +28,7 @@
  */
 
 // fields
-$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryActive']         = array('Abhängiges Pflichtfleld aktivieren', 'Das Feld muss zum Abschicken des Formulars ausgefüllt werden, wenn ein übergeordnetes Feld einen Wert enthält.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryActive']         = array('Abhängiges Pflichtfeld aktivieren', 'Wählen Sie, ob das Feld zum Abschicken des Formulars ausgefüllt sein muss, wenn ein übergeordnetes Feld einen Wert enthält.');
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFields'] = array('Übergeordnete Felder', 'Wählen Sie die Felder des Formulars aus, die, wenn sie einen Wert enthalten, das aktuelle Feld zum Pflichtfeld machen.');
 
 // legends

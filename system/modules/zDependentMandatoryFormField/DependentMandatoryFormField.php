@@ -33,10 +33,12 @@
  * @copyright  Cliff Parnitzky 2012
  * @author     Cliff Parnitzky
  */
-class DependentMandatoryFormField extends Backend
-{
-	public function __construct()
-	{
+class DependentMandatoryFormField extends Backend {
+	
+	/**
+	 * Constructor, initialize the object.
+	 */
+	public function __construct() {
 		parent::__construct();
 		$this->import('Database');
 		$this->import('Input');
@@ -45,8 +47,7 @@ class DependentMandatoryFormField extends Backend
 	/**
 	 * Execute Hook: loadFormField to add special classes
 	 */
-	public function loadDependentMandatoryFormField(Widget $objWidget, $strFormId, $arrData)
-	{
+	public function loadDependentMandatoryFormField(Widget $objWidget, $strFormId, $arrData) {
 		if ($objWidget->dependentMandatoryActive) {
 			$objWidget->class = "dependent";
 			$objWidget->required = true;
@@ -57,83 +58,39 @@ class DependentMandatoryFormField extends Backend
 	/**
 	 * Execute Hook: validateFormField to check if the dependent form field is valid
 	 */
-	public function validateDependentMandatoryFormField(Widget $objWidget, $strFormId, $arrData)
-	{
+	public function validateDependentMandatoryFormField(Widget $objWidget, $strFormId, $arrData) {
 		if ($objWidget->dependentMandatoryActive) {
-			/*$arrDependentMandatorySuperiorFields = deserialize($objWidget->dependentMandatorySuperiorFields);
-			// will be null, if the record is new
-			// in the other case the fields of this record must be excluded while duplication checking
-			$dataRecordId = $this->Input->get($this->getFormdataDetailsKey());
-			
-			$arrParams = array();
-			$arrParams[] = $arrData['id'];
-			foreach ($arrDuplicationCheckingFields as $fieldName) {
-				$arrParams[] = trim($this->Input->postRaw($fieldName));
-			}
-			
-			if (strlen($dataRecordId) > 0) {
-				$arrParams[] = $dataRecordId;
-			}
+			$arrDependentMandatorySuperiorFields = deserialize($objWidget->dependentMandatorySuperiorFields);
+			$method = strtolower($this->getFormMethod($arrData['id']));
 
-			$records = $this->Database->prepare($this->buildQueryString($arrDuplicationCheckingFields, $dataRecordId))->execute($arrParams);
-			if ($records->next()) {
-				$fields = array();
-				foreach ($arrDuplicationCheckingFields as $fieldName) {
-					$dbField = $fieldName . "_label";
-					$fields[] = $records->$dbField;
+			foreach ($arrDependentMandatorySuperiorFields as $field) {
+				if ($this->Input->$method($field) != null && $this->Input->$method($objWidget->name) == null) {
+					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'], $objWidget->label));
+					break;
 				}
-			
-				$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'], implode(", ", $fields)));*/
+			}
 		}
+		
 		return $objWidget;
 	}
 
 	/**
-	 * build the sql query
+	 * Determine the forms method.
 	 */
-	private function buildQueryString ($arrDuplicationCheckingFields, $dataRecordId) {
-		$queryString = "SELECT ";
-		
-		$fields = array();
-		foreach ($arrDuplicationCheckingFields as $fieldName) {
-			$fields[] = "fdd_" . $fieldName . ".ff_label as " . $fieldName . "_label ";
-		}
-		
-		$queryString .= implode(", ", $fields);
-		$queryString .= "FROM tl_form f ";
-		
-		$queryString .= "JOIN tl_formdata fd ON fd.form = f.title ";
-		
-		foreach ($arrDuplicationCheckingFields as $fieldName) {
-			$queryString .= "JOIN tl_formdata_details fdd_" . $fieldName . " ON fdd_" . $fieldName . ".pid = fd.id ";
-		}
-		
-		$queryString .= "WHERE f.id = ? ";
-		
-		foreach ($arrDuplicationCheckingFields as $fieldName) {
-			$queryString .= "AND fdd_" . $fieldName . ".ff_name = '" . $fieldName . "' AND fdd_" . $fieldName . ".value = ? ";
-		}
-		
-		if (strlen($dataRecordId) > 0) {
-			$queryString .= "AND NOT fd.id = ? ";
-		} 
-		$queryString .= "ORDER BY fd.tstamp DESC";
-		
-		return $queryString;
+	private function getFormMethod ($formId) {
+		return $this->Database->prepare("SELECT method FROM tl_form WHERE id = ?")->limit(1)->execute($formId)->method;
 	}
 	
 	/**
 	 * Return all possible form fields as array
 	 * @return array
 	 */
-	public function getAllInputFormFields(DataContainer $dc)
-	{
+	public function getAllInputFormFields(DataContainer $dc) {
 		$fields = array();
 		
 		$intPid = $dc->activeRecord->pid;
 
-		if ($this->Input->get('act') == 'overrideAll')
-		{
+		if ($this->Input->get('act') == 'overrideAll') {
 			$intPid = $this->Input->get('id');
 		}
 
@@ -141,13 +98,11 @@ class DependentMandatoryFormField extends Backend
 		$objFields = $this->Database->prepare("SELECT name,label,type FROM tl_form_field WHERE pid = ? AND NOT id = ? ORDER BY name ASC")
 							->execute(array($intPid, $this->Input->get('id')));
 
-		while ($objFields->next())
-		{
+		while ($objFields->next()) {
 			$strClass = $GLOBALS['TL_FFL'][$objFields->type];
 
 			// Continue if the class is not defined
-			if (!$this->classFileExists($strClass))
-			{
+			if (!$this->classFileExists($strClass)) {
 				continue;
 			}
 			
@@ -163,30 +118,6 @@ class DependentMandatoryFormField extends Backend
 		}
 
 		return $fields;
-	}
-	
-	private function getFormdataDetailsKey ()
-	{
-		$strFormdataDetailsKey = 'details';
-
-		// get params of related listing formdata
-		$intListingId = intval($_SESSION['EFP']['LISTING_MOD']['id']);
-		if ($intListingId)
-		{
-			$objListing = $this->Database->prepare("SELECT efg_DetailsKey FROM tl_module WHERE id = ?")
-								->execute($intListingId);
-			if ($objListing->numRows)
-			{
-				$arrListing = $objListing->fetchAssoc();
-			}
-		}
-
-		if (strlen($arrListing['efg_DetailsKey']))
-		{
-			$strFormdataDetailsKey = $arrListing['efg_DetailsKey'];
-		}
-		
-		return $strFormdataDetailsKey;
 	}
 }
 
