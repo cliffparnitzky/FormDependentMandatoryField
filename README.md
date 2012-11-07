@@ -22,6 +22,7 @@ Compatibility
 
 - min. version: Contao 2.9.5
 - max. version: Contao 2.11.6
+- for compatibility with Contao 3.0.x read [here](https://github.com/cliffparnitzky/DependentMandatoryFormField/issues/6#issuecomment-10151430)
 
 
 CSS Tip
