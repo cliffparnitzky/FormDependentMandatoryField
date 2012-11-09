@@ -33,7 +33,7 @@ Compatibility
 Dependency
 ----------
 
-- There are not dependent extensions, that have to be installed.
+- There are no dependencies to other extensions, that have to be installed.
 
 
 Additional information
