@@ -35,6 +35,9 @@
  */
 class DependentMandatoryFormField extends Backend {
 	
+	private static $RULE_ONE = '0';
+	private static $RULE_ALL = '1';
+	
 	/**
 	 * Constructor, initialize the object.
 	 */
@@ -63,10 +66,25 @@ class DependentMandatoryFormField extends Backend {
 			$arrDependentMandatorySuperiorFields = deserialize($objWidget->dependentMandatorySuperiorFields);
 			$method = strtolower($this->getFormMethod($arrData['id']));
 
+			$filledSuperiorFields = 0;
 			foreach ($arrDependentMandatorySuperiorFields as $field) {
-				if ($this->Input->$method($field) != null && $this->Input->$method($objWidget->name) == null) {
+				if ($this->Input->$method($field) != null) {
+					$filledSuperiorFields++;
+				}
+			}
+			
+			if ($filledSuperiorFields > 0 && $this->Input->$method($objWidget->name) == null) {
+				if ($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) == $filledSuperiorFields) {
+					// all superior fields are filled
 					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'], $objWidget->label));
-					break;
+				} else if ($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE) {
+					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'], $objWidget->label));
+				}
+			} else if ($objWidget->dependentMandatoryEmpty && $this->Input->$method($objWidget->name) != null) {
+				if ($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) != $filledSuperiorFields) {
+						$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty'], $objWidget->label));
+				} else if ($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE && $filledSuperiorFields == 0) {
+					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'], $objWidget->label));
 				}
 			}
 		}

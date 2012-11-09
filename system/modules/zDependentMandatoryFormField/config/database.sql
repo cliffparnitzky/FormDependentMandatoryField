@@ -12,5 +12,7 @@
 --
 CREATE TABLE `tl_form_field` (
   `dependentMandatoryActive` char(1) NOT NULL default '',
-  `dependentMandatorySuperiorFields` blob NULL
+  `dependentMandatorySuperiorFields` blob NULL,
+  `dependentMandatoryValidationRule` char(1) NOT NULL default ''
+  `dependentMandatoryEmpty` char(1) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

@@ -30,6 +30,7 @@
 /**
  * Error messages
  */
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'] = 'Bitte füllen Sie das Feld "%s" aus! Die Vergabe eines Wertes ist Pflicht, weil ein übergeordnetes Feld einen Wert enthält.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryError']      = 'Bitte füllen Sie das Feld "%s" aus! Die Vergabe eines Wertes ist Pflicht, weil ein übergeordnetes Feld einen Wert enthält.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty'] = 'Das Feld "%s" muss leer sein, da die übergeordneten Felder keinen Wert enthalten.';
 
 ?>

@@ -44,7 +44,27 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatorySuperiorFields'
 	'filter'                  => false,
 	'inputType'               => 'checkbox',
 	'options_callback'        => array('DependentMandatoryFormField', 'getAllInputFormFields'),
-	'eval'                    => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50')
+	'eval'                    => array('mandatory'=>true, 'multiple'=>true)
+);
+
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatoryValidationRule'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRule'],
+	'exclude'                 => true,
+	'filter'                  => false,
+	'inputType'               => 'radio',
+	'default'                 => '0',
+	'options'                 => array('0', '1'),
+	'reference'               => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRuleOptions'],
+	'eval'                    => array('mandatory'=>true)
+);
+
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatoryEmpty'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryEmpty'],
+	'exclude'                 => true,
+	'filter'                  => true,
+	'inputType'               => 'checkbox'
 );
 
 // Palettes
@@ -56,7 +76,7 @@ foreach ($GLOBALS['TL_DCA']['tl_form_field']['palettes'] as $name=>$palette) {
 
 // Subpalettes
 array_insert($GLOBALS['TL_DCA']['tl_form_field']['subpalettes'], count($GLOBALS['TL_DCA']['tl_form_field']['subpalettes']),
-	array('dependentMandatoryActive' => 'dependentMandatorySuperiorFields')
+	array('dependentMandatoryActive' => 'dependentMandatorySuperiorFields,dependentMandatoryValidationRule,dependentMandatoryEmpty')
 );
 
 ?>

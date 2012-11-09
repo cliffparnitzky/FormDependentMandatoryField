@@ -30,8 +30,14 @@
 // fields
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryActive']         = array('Abhängiges Pflichtfeld aktivieren', 'Wählen Sie, ob das Feld zum Abschicken des Formulars ausgefüllt sein muss, wenn ein übergeordnetes Feld einen Wert enthält.');
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFields'] = array('Übergeordnete Felder', 'Wählen Sie die Felder des Formulars aus, die, wenn sie einen Wert enthalten, das aktuelle Feld zum Pflichtfeld machen.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRule'] = array('Validierungsregel', 'Wählen Sie wie die übergeordneten Felder befüllt sein müssen, um dieses Feld zum Pflichtfeld zu machen.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryEmpty']          = array('Feld muss leer sein', 'Wählen Sie ob das Feld leer sein muss, wenn die Validierungsregel nicht erfüllt ist.');
 
 // legends
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatory_legend'] = "Abhängiges Pflichtfeld";
+
+// fields
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRuleOptions']['0'] = 'Mindestens 1 Feld muss befüllt sein.';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRuleOptions']['1'] = 'Alle Felder müssen befüllt sein.';
  
 ?>

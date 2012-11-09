@@ -30,8 +30,14 @@
 // fields
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryActive']         = array('Activate dependent mandatory form field', 'Select if this field must contain a value, if one of its superior fields is filled.');
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFields'] = array('Superior fields', 'Select the fields of the form, which, if they contain a value, let the actual field let be mandatory.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRule'] = array('Validation rule', 'Select how the superior fields have to be filled to make this field a mandatory field.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryEmpty']          = array('Field must be empty', 'Select if the field has to be empty if the validation rule is not satisfied.');
 
 // legends
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatory_legend'] = "Dependent mandatory form field";
+
+// fields
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRuleOptions']['0'] = 'At least 1 field must not be empty.';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRuleOptions']['1'] = 'All fields must not be empty.';
 
 ?>
