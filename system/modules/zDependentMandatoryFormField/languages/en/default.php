@@ -30,7 +30,9 @@
 /**
  * Error messages
  */
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryError']      = 'Field "%s" must not be empty! Setting a value is mandatory, because a superior field contains a value.';
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty'] = 'Field "%s" must be empty, because the superior field(s) contain no value.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorMandatory']['Single']   = 'The field "%s" must not be empty, because the field "%s" contains a value.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorMandatory']['Multiple'] = 'The field "%s" must not be empty, because the fields "%s" contain values.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty']['Single']       = 'The field "%s" must be empty, because the field "%s" contains no value.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty']['Multiple']     = 'The field "%s" must be empty, because the fields "%s" contain no values.';
 
 ?>

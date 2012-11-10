@@ -66,25 +66,36 @@ class DependentMandatoryFormField extends Backend {
 			$arrDependentMandatorySuperiorFields = deserialize($objWidget->dependentMandatorySuperiorFields);
 			$method = strtolower($this->getFormMethod($arrData['id']));
 
-			$filledSuperiorFields = 0;
+			$formFields = $this->getFormFields($arrData['id']);
+			$filledSuperiorFieldsString = '';
+			$allSuperiorFieldsString = '';
+			$filledSuperiorFieldsCount = 0;
 			foreach ($arrDependentMandatorySuperiorFields as $field) {
 				if ($this->Input->$method($field) != null) {
-					$filledSuperiorFields++;
+					if ($filledSuperiorFieldsCount > 0) {
+						$filledSuperiorFieldsString .= ', ';
+					}
+					$filledSuperiorFieldsString .= $formFields[$field];
+					$filledSuperiorFieldsCount++;
 				}
+				
+				if (strlen($allSuperiorFieldsString)) {
+					$allSuperiorFieldsString .= ', ';
+				}
+				$allSuperiorFieldsString .= $formFields[$field];
 			}
 			
-			if ($filledSuperiorFields > 0 && $this->Input->$method($objWidget->name) == null) {
-				if ($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) == $filledSuperiorFields) {
-					// all superior fields are filled
-					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'], $objWidget->label));
-				} else if ($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE) {
-					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'], $objWidget->label));
+			if ($filledSuperiorFieldsCount > 0 && $this->Input->$method($objWidget->name) == null) {
+				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) == $filledSuperiorFieldsCount) ||
+					($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE)) {
+					
+					$objWidget->addError($this->getErrorMessage('dependentMandatoryErrorMandatory', $objWidget, $filledSuperiorFieldsCount, $filledSuperiorFieldsString));
 				}
 			} else if ($objWidget->dependentMandatoryEmpty && $this->Input->$method($objWidget->name) != null) {
-				if ($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) != $filledSuperiorFields) {
-						$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty'], $objWidget->label));
-				} else if ($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE && $filledSuperiorFields == 0) {
-					$objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryError'], $objWidget->label));
+				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) != $filledSuperiorFieldsCount) ||
+					($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE && $filledSuperiorFieldsCount == 0)) {
+					
+					$objWidget->addError($this->getErrorMessage('dependentMandatoryErrorEmpty', $objWidget, count($arrDependentMandatorySuperiorFields), $allSuperiorFieldsString));
 				}
 			}
 		}
@@ -101,6 +112,41 @@ class DependentMandatoryFormField extends Backend {
 	
 	/**
 	 * Return all possible form fields as array
+	 * @return array
+	 */
+	public function getFormFields($formId) {
+		$fields = array();
+
+		// Get all form fields which can be used
+		$objFields = $this->Database->prepare("SELECT name,label FROM tl_form_field WHERE pid = ? ORDER BY name ASC")
+							->execute($formId);
+
+		while ($objFields->next()) {
+			$name = $objFields->name;
+			$label = $objFields->label;
+			$fields[$name] = strlen($label) ? $label : $name;
+		}
+
+		return $fields;
+	}
+	
+	/**
+	 * Creates a special error message for each case.
+	 */
+	private function getErrorMessage ($msgKey, $objWidget, $superiorFieldsCount, $filledSuperiorFieldsString) {
+		if ($superiorFieldsCount > 0) {
+			$singularPluralErrorKey = 'Single';
+			if ($superiorFieldsCount > 1) {
+				$singularPluralErrorKey = 'Multiple';
+			}
+			return sprintf($GLOBALS['TL_LANG']['ERR'][$msgKey][$singularPluralErrorKey], $objWidget->label, $filledSuperiorFieldsString);
+		}
+		
+		return '';
+	}
+	
+	/**
+	 * Return all possible form fields as array ... to configure superior fields in dca
 	 * @return array
 	 */
 	public function getAllInputFormFields(DataContainer $dc) {
