@@ -52,9 +52,9 @@ This is only an example:
 			content: '(';
 	}
 	.dependent span.mandatory {
-			font-size: 8px;
+			font-size: 9px;
 			vertical-align: super;
-			color: orange;
+			color: #FF7777;
 	}
 	
 With the css above, a form like the follwoing will be created:
