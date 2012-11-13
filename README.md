@@ -56,3 +56,7 @@ This is only an example:
 			vertical-align: super;
 			color: orange;
 	}
+	
+With the css above, a form like the follwoing will be created:
+
+![Screenshot 2](https://raw.github.com/cliffparnitzky/DependentMandatoryFormField/master/screenshot2.jpg)
