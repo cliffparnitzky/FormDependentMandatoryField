@@ -70,28 +70,31 @@ class DependentMandatoryFormField extends Backend {
 			$filledSuperiorFieldsString = '';
 			$allSuperiorFieldsString = '';
 			$filledSuperiorFieldsCount = 0;
+			
 			foreach ($arrDependentMandatorySuperiorFields as $field) {
-				if ($this->Input->$method($field) != null) {
+				if ($this->getFieldValue($method, $field, $formFields) != null) {
 					if ($filledSuperiorFieldsCount > 0) {
 						$filledSuperiorFieldsString .= ', ';
 					}
-					$filledSuperiorFieldsString .= $formFields[$field];
+					$filledSuperiorFieldsString .= $formFields[$field]['label'];
 					$filledSuperiorFieldsCount++;
 				}
 				
 				if (strlen($allSuperiorFieldsString)) {
 					$allSuperiorFieldsString .= ', ';
 				}
-				$allSuperiorFieldsString .= $formFields[$field];
+				$allSuperiorFieldsString .= $formFields[$field]['label'];
 			}
 			
 			if ($filledSuperiorFieldsCount > 0 && $this->Input->$method($objWidget->name) == null) {
+				// value is empty, but has to be filled
 				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) == $filledSuperiorFieldsCount) ||
 					($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE)) {
 					
 					$objWidget->addError($this->getErrorMessage('dependentMandatoryErrorMandatory', $objWidget, $filledSuperiorFieldsCount, $filledSuperiorFieldsString));
 				}
 			} else if ($objWidget->dependentMandatoryEmpty && $this->Input->$method($objWidget->name) != null) {
+				// value has to be empty, but is filled
 				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) != $filledSuperiorFieldsCount) ||
 					($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE && $filledSuperiorFieldsCount == 0)) {
 					
@@ -118,16 +121,34 @@ class DependentMandatoryFormField extends Backend {
 		$fields = array();
 
 		// Get all form fields which can be used
-		$objFields = $this->Database->prepare("SELECT name,label FROM tl_form_field WHERE pid = ? ORDER BY name ASC")
-							->execute($formId);
+		$objFields = $this->Database->prepare("SELECT name, label, type FROM tl_form_field WHERE pid = ? ORDER BY name ASC")
+						  ->execute($formId);
 
 		while ($objFields->next()) {
 			$name = $objFields->name;
 			$label = $objFields->label;
-			$fields[$name] = strlen($label) ? $label : $name;
+			$fields[$name] = array('label' => strlen($label) ? $label : $name, 'type' => $objFields->type);
 		}
 
 		return $fields;
+	}
+	
+	/**
+	 * Determine the value of the given field.
+	 */
+	private function getFieldValue($formMethod, $fieldName, $formFields) {
+		// because we don't get upload value from $_POST or $_GET, it musst be read from $_SESSION
+		$strClass = $GLOBALS['TL_FFL'][$formFields[$fieldName]['type']];
+		if ($this->classFileExists($strClass)) {
+			$widget = new $strClass;
+			if ($widget instanceof FormFileUpload) {
+				// the actual field is an upload field
+				$arrFileData = $_SESSION['FILES'][$fieldName];
+				return str_replace(TL_ROOT . '/', '', $arrFileData['tmp_name']);
+			}
+		}
+		
+		return $this->Input->$formMethod($fieldName);
 	}
 	
 	/**
@@ -172,7 +193,7 @@ class DependentMandatoryFormField extends Backend {
 			
 			// Continue if the class is not an input submit
 			$widget = new $strClass;
-			if (!$widget->submitInput()) {
+			if (!$widget->submitInput() && !$widget instanceof FormFileUpload) {
 				continue;
 			}
 			
@@ -180,7 +201,6 @@ class DependentMandatoryFormField extends Backend {
 			$label = $objFields->label;
 			$fields[$name] = strlen($label) ? $label.' ['.$name.']' : $name;
 		}
-
 		return $fields;
 	}
 }
