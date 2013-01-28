@@ -70,31 +70,28 @@ class DependentMandatoryFormField extends Backend {
 			$filledSuperiorFieldsString = '';
 			$allSuperiorFieldsString = '';
 			$filledSuperiorFieldsCount = 0;
-			
 			foreach ($arrDependentMandatorySuperiorFields as $field) {
-				if ($this->getFieldValue($method, $field, $formFields) != null) {
+				if ($this->Input->$method($field) != null) {
 					if ($filledSuperiorFieldsCount > 0) {
 						$filledSuperiorFieldsString .= ', ';
 					}
-					$filledSuperiorFieldsString .= $formFields[$field]['label'];
+					$filledSuperiorFieldsString .= $formFields[$field];
 					$filledSuperiorFieldsCount++;
 				}
 				
 				if (strlen($allSuperiorFieldsString)) {
 					$allSuperiorFieldsString .= ', ';
 				}
-				$allSuperiorFieldsString .= $formFields[$field]['label'];
+				$allSuperiorFieldsString .= $formFields[$field];
 			}
 			
 			if ($filledSuperiorFieldsCount > 0 && $this->Input->$method($objWidget->name) == null) {
-				// value is empty, but has to be filled
 				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) == $filledSuperiorFieldsCount) ||
 					($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE)) {
 					
 					$objWidget->addError($this->getErrorMessage('dependentMandatoryErrorMandatory', $objWidget, $filledSuperiorFieldsCount, $filledSuperiorFieldsString));
 				}
 			} else if ($objWidget->dependentMandatoryEmpty && $this->Input->$method($objWidget->name) != null) {
-				// value has to be empty, but is filled
 				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) != $filledSuperiorFieldsCount) ||
 					($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE && $filledSuperiorFieldsCount == 0)) {
 					
@@ -118,37 +115,19 @@ class DependentMandatoryFormField extends Backend {
 	 * @return array
 	 */
 	public function getFormFields($formId) {
+		$this->loadLanguageFile('tl_form_field');
+
 		$fields = array();
 
 		// Get all form fields which can be used
-		$objFields = $this->Database->prepare("SELECT name, label, type FROM tl_form_field WHERE pid = ? ORDER BY name ASC")
-						  ->execute($formId);
+		$obFormFields = $this->Database->prepare("SELECT * FROM tl_form_field WHERE pid = ? ORDER BY label, name ASC")
+							->execute($formId);
 
-		while ($objFields->next()) {
-			$name = $objFields->name;
-			$label = $objFields->label;
-			$fields[$name] = array('label' => strlen($label) ? $label : $name, 'type' => $objFields->type);
+		while ($obFormFields->next()) {
+			$fields[$obFormFields->name] = ((strlen($obFormFields->label) > 0) ? $obFormFields->label . " [" . $GLOBALS['TL_LANG']['tl_form_field']['name'][0] . ": " . $obFormFields->name . " / " : $obFormFields->name . " [") . $GLOBALS['TL_LANG']['tl_form_field']['type'][0] . ": " . $GLOBALS['TL_LANG']['FFL'][$obFormFields->type][0] . "]";
 		}
 
 		return $fields;
-	}
-	
-	/**
-	 * Determine the value of the given field.
-	 */
-	private function getFieldValue($formMethod, $fieldName, $formFields) {
-		// because we don't get upload value from $_POST or $_GET, it musst be read from $_SESSION
-		$strClass = $GLOBALS['TL_FFL'][$formFields[$fieldName]['type']];
-		if ($this->classFileExists($strClass)) {
-			$widget = new $strClass;
-			if ($widget instanceof FormFileUpload) {
-				// the actual field is an upload field
-				$arrFileData = $_SESSION['FILES'][$fieldName];
-				return str_replace(TL_ROOT . '/', '', $arrFileData['tmp_name']);
-			}
-		}
-		
-		return $this->Input->$formMethod($fieldName);
 	}
 	
 	/**
@@ -171,6 +150,8 @@ class DependentMandatoryFormField extends Backend {
 	 * @return array
 	 */
 	public function getAllInputFormFields(DataContainer $dc) {
+		$this->loadLanguageFile('tl_form_field');
+		
 		$fields = array();
 		
 		$intPid = $dc->activeRecord->pid;
@@ -180,11 +161,11 @@ class DependentMandatoryFormField extends Backend {
 		}
 
 		// Get all form fields which can be used
-		$objFields = $this->Database->prepare("SELECT name,label,type FROM tl_form_field WHERE pid = ? AND NOT id = ? ORDER BY name ASC")
+		$obFormFields = $this->Database->prepare("SELECT * FROM tl_form_field WHERE pid = ? AND NOT id = ? ORDER BY label, name ASC")
 							->execute(array($intPid, $this->Input->get('id')));
 
-		while ($objFields->next()) {
-			$strClass = $GLOBALS['TL_FFL'][$objFields->type];
+		while ($obFormFields->next()) {
+			$strClass = $GLOBALS['TL_FFL'][$obFormFields->type];
 
 			// Continue if the class is not defined
 			if (!$this->classFileExists($strClass)) {
@@ -197,10 +178,9 @@ class DependentMandatoryFormField extends Backend {
 				continue;
 			}
 			
-			$name = $objFields->name;
-			$label = $objFields->label;
-			$fields[$name] = strlen($label) ? $label.' ['.$name.']' : $name;
+			$fields[$obFormFields->name] = ((strlen($obFormFields->label) > 0) ? $obFormFields->label . " [" . $GLOBALS['TL_LANG']['tl_form_field']['name'][0] . ": " . $obFormFields->name . " / " : $obFormFields->name . " [") . $GLOBALS['TL_LANG']['tl_form_field']['type'][0] . ": " . $GLOBALS['TL_LANG']['FFL'][$obFormFields->type][0] . "]";
 		}
+
 		return $fields;
 	}
 }
