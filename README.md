@@ -1,5 +1,5 @@
-Contao DependentMandatoryFormField Extension
-============================================
+Contao Extension: DependentMandatoryFormField
+=============================================
 
 Provides an additional option for form field to be defined as dependent mandatory. Field is mendatory if another field (or more) is filled / or not.
 
@@ -27,7 +27,7 @@ Compatibility
 -------------
 
 - min. version: Contao 2.9.5
-- max. version: Contao 3.0.0
+- max. version: Contao 3.0.x
 
 
 Dependency
