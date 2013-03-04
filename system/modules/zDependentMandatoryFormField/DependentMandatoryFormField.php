@@ -71,7 +71,11 @@ class DependentMandatoryFormField extends Backend {
 			$allSuperiorFieldsString = '';
 			$filledSuperiorFieldsCount = 0;
 			foreach ($arrDependentMandatorySuperiorFields as $field) {
-				if ($this->Input->$method($field) != null) {
+				$value = $this->Input->$method($field);
+				if ($value == null && $this->isFormFileUpload($field, $arrData['id'])) {
+					$value = $_SESSION['FILES'][$field]['name'];
+				}
+				if ($value != null) {
 					if ($filledSuperiorFieldsCount > 0) {
 						$filledSuperiorFieldsString .= ', ';
 					}
@@ -124,7 +128,7 @@ class DependentMandatoryFormField extends Backend {
 							->execute($formId);
 
 		while ($obFormFields->next()) {
-			$fields[$obFormFields->name] = ((strlen($obFormFields->label) > 0) ? $obFormFields->label . " [" . $GLOBALS['TL_LANG']['tl_form_field']['name'][0] . ": " . $obFormFields->name . " / " : $obFormFields->name . " [") . $GLOBALS['TL_LANG']['tl_form_field']['type'][0] . ": " . $GLOBALS['TL_LANG']['FFL'][$obFormFields->type][0] . "]";
+			$fields[$obFormFields->name] = (strlen($obFormFields->label) > 0) ? $obFormFields->label : $obFormFields->name;
 		}
 
 		return $fields;
@@ -182,6 +186,29 @@ class DependentMandatoryFormField extends Backend {
 		}
 
 		return $fields;
+	}
+	
+	/**
+	 * Return if the field with given id is of type file upload
+	 * @return boolean
+	 */
+	private function isFormFileUpload ($fieldName, $formId) {
+		$obFormField = $this->Database->prepare("SELECT * FROM tl_form_field WHERE name = ? AND pid = ?")
+							->limit(1)
+							->execute(array($fieldName, $formId));
+
+		if ($obFormField->next()) {
+			$strClass = $GLOBALS['TL_FFL'][$obFormField->type];
+
+			// Continue if the class is not defined
+			if ($this->classFileExists($strClass)) {
+				// check if the class correct type
+				$widget = new $strClass;
+				return ($widget instanceof FormFileUpload);
+			}			
+		}
+
+		return false;
 	}
 }
 
