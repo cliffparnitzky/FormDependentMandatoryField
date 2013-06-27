@@ -21,6 +21,7 @@ Screenshot
 ----------
 
 ![Screenshot](https://raw.github.com/cliffparnitzky/DependentMandatoryFormField/master/screenshot.jpg)
+![Screenshot](https://raw.github.com/cliffparnitzky/DependentMandatoryFormField/master/screenshot3.jpg)
 
 
 Compatibility
@@ -57,6 +58,6 @@ This is only an example:
 			color: #FF7777;
 	}
 	
-With the css above, a form like the follwoing will be created:
+With the css above, a form like the following will be created:
 
 ![Screenshot 2](https://raw.github.com/cliffparnitzky/DependentMandatoryFormField/master/screenshot2.jpg)

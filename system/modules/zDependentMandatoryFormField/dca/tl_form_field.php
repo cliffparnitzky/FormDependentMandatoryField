@@ -42,9 +42,41 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatorySuperiorFields'
 	'label'                   => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFields'],
 	'exclude'                 => true,
 	'filter'                  => false,
-	'inputType'               => 'checkbox',
-	'options_callback'        => array('DependentMandatoryFormField', 'getAllInputFormFields'),
-	'eval'                    => array('mandatory'=>true, 'multiple'=>true)
+	'inputType'               => 'multiColumnWizard',
+	'eval'                    => array
+	(
+			'mandatory'    => true,
+			'style'        => 'min-width: 100%;',
+			'tl_class'     =>'clr',
+			'columnFields' => array
+			(
+					'superiorFieldName' => array
+					(
+							'label'            => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldName'],
+							'exclude'          => true,
+							'inputType'        => 'select',
+							'options_callback' => array('DependentMandatoryFormField', 'getAllInputFormFields'),
+							'eval'             => array('mandatory'=>true, 'style'=>'width: 94%;')
+					),
+					'superiorFieldCondition' => array
+					(
+							'label'            => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldCondition'],
+							'exclude'          => true,
+							'inputType'        => 'select',
+							'options'          => array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'lk'),
+							'reference'        => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions'],
+							'eval'             => array('mandatory'=>true, 'style'=>'width: 94%;')
+					),
+					'superiorFieldValue' => array
+					(
+							'label'            => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldValue'],
+							'exclude'          => true,
+							'inputType'        => 'text',
+							'eval'             => array('mandatory'=>true, 'style'=>'width: 95%;')
+					)
+			)
+	)
+	
 );
 
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatoryValidationRule'] = array

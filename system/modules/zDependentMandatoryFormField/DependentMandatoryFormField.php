@@ -64,42 +64,100 @@ class DependentMandatoryFormField extends Backend {
 	public function validateDependentMandatoryFormField(Widget $objWidget, $strFormId, $arrData) {
 		if ($objWidget->dependentMandatoryActive) {
 			$arrDependentMandatorySuperiorFields = deserialize($objWidget->dependentMandatorySuperiorFields);
+			
+			// collect all conditions for each field
+			$arrSuperiorFields = array();
+			foreach ($arrDependentMandatorySuperiorFields as $field) {
+				$fieldName = $field['superiorFieldName'];
+				if (!array_key_exists($fieldName, $arrSuperiorFields)){
+					$arrSuperiorFields[$fieldName] = array();
+				}
+				$arrSuperiorFields[$fieldName][] = array('condition' => $field['superiorFieldCondition'], 'value' => $field['superiorFieldValue']);
+			}
+			
 			$method = strtolower($this->getFormMethod($arrData['id']));
 
 			$formFields = $this->getFormFields($arrData['id']);
-			$filledSuperiorFieldsString = '';
-			$allSuperiorFieldsString = '';
+			$filledSuperiorFields = array();
+			$allSuperiorFields = array();
 			$filledSuperiorFieldsCount = 0;
-			foreach ($arrDependentMandatorySuperiorFields as $field) {
-				$value = $this->Input->$method($field);
-				if ($value == null && $this->isFormFileUpload($field, $arrData['id'])) {
-					$value = $_SESSION['FILES'][$field]['name'];
-				}
-				if ($value != null) {
-					if ($filledSuperiorFieldsCount > 0) {
-						$filledSuperiorFieldsString .= ', ';
+			foreach ($arrSuperiorFields as $field => $rules) {
+				$values = array();
+				
+				$postValue = $this->Input->$method($field);
+				if ($postValue == null && $this->isFormFileUpload($field, $arrData['id'])) {
+					$values[] = $_SESSION['FILES'][$field]['name'];
+				} else {
+					if (is_array($postValue)) {
+						$values = $postValue;
+					} else {
+						$values[] = $postValue;
 					}
-					$filledSuperiorFieldsString .= $formFields[$field];
+				}
+				
+				// check against rules
+				$blnMatched = false;
+				
+				foreach ($values as $value) {
+					foreach ($rules as $rule) {
+						if (!$blnMatched) {
+							// compare the entered value with the expected value
+							$expectedValue = $rule['value'];
+							$condition = $rule['condition'];
+							
+							if ($expectedValue == '*') {
+								if (($condition == 'eq' || $condition == 'lk') && $value != null && strlen($value) > 0) {
+									$blnMatched = true;
+								} else if ($condition == 'ne' && $value == null && strlen($value) == 0) {
+									$blnMatched = true;
+								}
+							} else {
+								//convert $value / $expectedValue into numbers if possible
+								if (is_int($value) && is_int($expectedValue)) {
+									$value = intval($value);
+									$expectedValue = intval($expectedValue);
+								} else if (is_float ($value) && is_float ($expectedValue)) {
+									$value = floatval($value);
+									$expectedValue = floatval($expectedValue);
+								}
+								
+								switch ($condition) {
+									case 'eq' : $blnMatched = ($value ==  $expectedValue); break;
+									case 'ne' : $blnMatched = ($value !=  $expectedValue); break;
+									case 'lt' : $blnMatched = ($value <  $expectedValue); break;
+									case 'le' : $blnMatched = ($value <=  $expectedValue); break;
+									case 'gt' : $blnMatched = ($value >  $expectedValue); break;
+									case 'ge' : $blnMatched = ($value >=  $expectedValue); break;
+									case 'lk' : $blnMatched = (strpos($value, $expectedValue) !== FALSE); break;
+								}
+							}
+						}
+					}
+				}
+				if ($blnMatched) {
+					$filledSuperiorFields[] = $formFields[$field];
 					$filledSuperiorFieldsCount++;
 				}
 				
-				if (strlen($allSuperiorFieldsString)) {
-					$allSuperiorFieldsString .= ', ';
-				}
-				$allSuperiorFieldsString .= $formFields[$field];
+				$allSuperiorFields[] = $formFields[$field];
 			}
 			
-			if ($filledSuperiorFieldsCount > 0 && $this->Input->$method($objWidget->name) == null) {
-				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) == $filledSuperiorFieldsCount) ||
+			$widgetValue = $this->Input->$method($objWidget->name);
+			if ($widgetValue == null && $this->isFormFileUpload($objWidget->name, $arrData['id'])) {
+					$widgetValue = $_SESSION['FILES'][$objWidget->name]['name'];
+			}
+			
+			if ($filledSuperiorFieldsCount > 0 && $widgetValue == null) {
+				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrSuperiorFields) == $filledSuperiorFieldsCount) ||
 					($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE)) {
 					
-					$objWidget->addError($this->getErrorMessage('dependentMandatoryErrorMandatory', $objWidget, $filledSuperiorFieldsCount, $filledSuperiorFieldsString));
+					$objWidget->addError($this->getErrorMessage('dependentMandatoryErrorMandatory', $objWidget, $filledSuperiorFieldsCount, $filledSuperiorFields));
 				}
-			} else if ($objWidget->dependentMandatoryEmpty && $this->Input->$method($objWidget->name) != null) {
-				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrDependentMandatorySuperiorFields) != $filledSuperiorFieldsCount) ||
+			} else if ($objWidget->dependentMandatoryEmpty && $widgetValue != null) {
+				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrSuperiorFields) != $filledSuperiorFieldsCount) ||
 					($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE && $filledSuperiorFieldsCount == 0)) {
 					
-					$objWidget->addError($this->getErrorMessage('dependentMandatoryErrorEmpty', $objWidget, count($arrDependentMandatorySuperiorFields), $allSuperiorFieldsString));
+					$objWidget->addError($this->getErrorMessage('dependentMandatoryErrorEmpty', $objWidget, count($arrSuperiorFields), $allSuperiorFields));
 				}
 			}
 		}
@@ -137,13 +195,13 @@ class DependentMandatoryFormField extends Backend {
 	/**
 	 * Creates a special error message for each case.
 	 */
-	private function getErrorMessage ($msgKey, $objWidget, $superiorFieldsCount, $filledSuperiorFieldsString) {
+	private function getErrorMessage ($msgKey, $objWidget, $superiorFieldsCount, $filledSuperiorFields) {
 		if ($superiorFieldsCount > 0) {
 			$singularPluralErrorKey = 'Single';
 			if ($superiorFieldsCount > 1) {
 				$singularPluralErrorKey = 'Multiple';
 			}
-			return sprintf($GLOBALS['TL_LANG']['ERR'][$msgKey][$singularPluralErrorKey], $objWidget->label, $filledSuperiorFieldsString);
+			return sprintf($GLOBALS['TL_LANG']['ERR'][$msgKey][$singularPluralErrorKey], $objWidget->label, implode(', ', $filledSuperiorFields));
 		}
 		
 		return '';
@@ -153,15 +211,20 @@ class DependentMandatoryFormField extends Backend {
 	 * Return all possible form fields as array ... to configure superior fields in dca
 	 * @return array
 	 */
-	public function getAllInputFormFields(DataContainer $dc) {
+	public function getAllInputFormFields(MultiColumnWizard $mcw) {
 		$this->loadLanguageFile('tl_form_field');
 		
 		$fields = array();
 		
-		$intPid = $dc->activeRecord->pid;
+		$intPid = -1;
 
-		if ($this->Input->get('act') == 'overrideAll') {
+		if ($this->Input->get('act') == 'overrideAll' || $this->Input->get('act') == 'editAll') {
 			$intPid = $this->Input->get('id');
+		} else {
+			$intPid = $this->Database->prepare("SELECT pid FROM tl_form_field WHERE id = ?")
+									  ->limit(1)
+									  ->execute($this->Input->get('id'))
+									  ->pid;
 		}
 
 		// Get all form fields which can be used

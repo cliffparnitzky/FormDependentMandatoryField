@@ -29,9 +29,14 @@
 
 // fields
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryActive']         = array('Activate dependent mandatory form field', 'Select if this field must contain a value, if one of its superior fields is filled.');
-$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFields'] = array('Superior fields', 'Select the fields of the form, which, if they contain a value, let the actual field let be mandatory.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFields'] = array('Superior fields', 'Select the form fields, which, if they contain the defined value, let the actual field be mandatory. If there are more than one condifitons for a superior field, at least one has to be true (OR combination).');
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRule'] = array('Validation rule', 'Select how the superior fields have to be filled to make this field a mandatory field.');
-$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryEmpty']          = array('Field must be empty', 'Select if the field has to be empty if the validation rule is not satisfied.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryEmpty']          = array('Field must be empty if validation rule is not satisfied', 'Select if the field has to be empty if the validation rule is not satisfied.');
+
+// mcw fields
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldName']      = array('Form field', 'Select the form field.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldCondition'] = array('Condition', 'Select the condition for field valiation.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldValue']     = array('Value', 'Specify the value to be tested during validation. As a placeholder for any field value a \'*\' (asterisk) can be used.');
 
 // legends
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatory_legend'] = "Dependent mandatory form field";
@@ -39,5 +44,15 @@ $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatory_legend'] = "Dependent m
 // fields
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRuleOptions']['0'] = 'At least 1 field must not be empty.';
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRuleOptions']['1'] = 'All fields must not be empty.';
+
+
+// options
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['eq'] = '= (equal)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['ne'] = '!= (not equal)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['lt'] = '< (lower)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['le'] = '<= (lower or equal)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['gt'] = '> (greater)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['ge'] = '>= (greater or equal)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['lk'] = 'LIKE (similar to)';
 
 ?>

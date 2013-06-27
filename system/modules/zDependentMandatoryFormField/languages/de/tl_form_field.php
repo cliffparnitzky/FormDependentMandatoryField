@@ -29,9 +29,14 @@
 
 // fields
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryActive']         = array('Abhängiges Pflichtfeld aktivieren', 'Wählen Sie, ob das Feld zum Abschicken des Formulars ausgefüllt sein muss, wenn ein übergeordnetes Feld einen Wert enthält.');
-$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFields'] = array('Übergeordnete Felder', 'Wählen Sie die Felder des Formulars aus, die, wenn sie einen Wert enthalten, das aktuelle Feld zum Pflichtfeld machen.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFields'] = array('Übergeordnete Felder', 'Wählen Sie die Formularfelder aus, die, wenn sie den definierten Wert enthalten, das aktuelle Feld zum Pflichtfeld machen. Wenn für ein übergeordnetes Feld mehrere Bedingungen angegeben sind, wird geprüft, ob mindestens eine davon zutrifft (OR Verknüpfung).');
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRule'] = array('Validierungsregel', 'Wählen Sie wie die übergeordneten Felder befüllt sein müssen, um dieses Feld zum Pflichtfeld zu machen.');
-$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryEmpty']          = array('Feld muss leer sein', 'Wählen Sie ob das Feld leer sein muss, wenn die Validierungsregel nicht erfüllt ist.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryEmpty']          = array('Feld muss leer sein wenn Validierungsregel nicht erfüllt', 'Wählen Sie ob das Feld leer sein muss, wenn die Validierungsregel nicht erfüllt ist.');
+
+// mcw fields
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldName']      = array('Formularfeld', 'Wählen Sie das Formularfeld aus.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldCondition'] = array('Bedingung', 'Wählen Sie die Bedingung für die Feldvalidierung.');
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldValue']     = array('Wert', 'Legen Sie den Wert fest, der bei der Validierung überprüft werden soll. Als Platzhalter für einen beliebigen Feldwert kann \'*\' (Stern) verwendet werden.');
 
 // legends
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatory_legend'] = "Abhängiges Pflichtfeld";
@@ -39,5 +44,14 @@ $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatory_legend'] = "Abhängiges
 // fields
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRuleOptions']['0'] = 'Mindestens 1 Feld muss befüllt sein.';
 $GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRuleOptions']['1'] = 'Alle Felder müssen befüllt sein.';
+
+// options
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['eq'] = '= (gleich)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['ne'] = '!= (ungleich)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['lt'] = '< (kleiner)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['le'] = '<= (kleiner oder gleich)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['gt'] = '> (größer)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['ge'] = '>= (größer oder gleich)';
+$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions']['lk'] = 'LIKE (ähnlich)';
  
 ?>
