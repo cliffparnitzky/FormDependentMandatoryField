@@ -1,8 +1,8 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * Copyright (C) 2005-2015 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -18,18 +18,21 @@
  * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>. 
+ * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Cliff Parnitzky 2012
+ * @copyright  Cliff Parnitzky 2012-2015
  * @author     Cliff Parnitzky
- * @package    DependentMandatoryFormField
+ * @package    FormDependentMandatoryField
  * @license    LGPL
  */
 
 /**
- * Define name and tooltip for preferences (inactive modules)
+ * Error messages
  */
-$GLOBALS['TL_LANG']['MOD']['zDependentMandatoryFormField'] = 'Fügt Formularfeldern die Option hinzu, als abhängiges Pflichtfeld deklariert zu werden.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorMandatory']['Single']   = 'The field "%s" must not be empty, because the field "%s" contains a value.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorMandatory']['Multiple'] = 'The field "%s" must not be empty, because the fields "%s" contain values.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty']['Single']       = 'The field "%s" must be empty, because the field "%s" contains no value.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty']['Multiple']     = 'The field "%s" must be empty, because the fields "%s" contain no values.';
 
 ?>

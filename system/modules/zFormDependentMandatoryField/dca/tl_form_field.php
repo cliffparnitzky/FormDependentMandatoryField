@@ -1,8 +1,8 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * Copyright (C) 2005-2015 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,9 +21,9 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Cliff Parnitzky 2012
+ * @copyright  Cliff Parnitzky 2012-2015
  * @author     Cliff Parnitzky
- * @package    DependentMandatoryFormField
+ * @package    FormDependentMandatoryField
  * @license    LGPL
  */
 
@@ -34,9 +34,9 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatoryActive'] = arra
 	'exclude'                 => true,
 	'filter'                  => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('submitOnChange'=>true)
+	'eval'                    => array('submitOnChange'=>true),
+	'sql'                     => "char(1) NOT NULL default ''"
 );
-
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatorySuperiorFields'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFields'],
@@ -55,8 +55,8 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatorySuperiorFields'
 							'label'            => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldName'],
 							'exclude'          => true,
 							'inputType'        => 'select',
-							'options_callback' => array('DependentMandatoryFormField', 'getAllInputFormFields'),
-							'eval'             => array('mandatory'=>true, 'style'=>'width: 94%;')
+							'options_callback' => array('FormDependentMandatoryField', 'getAllInputFormFields'),
+							'eval'             => array('mandatory'=>true, 'style'=>'width: 400px;')
 					),
 					'superiorFieldCondition' => array
 					(
@@ -65,20 +65,19 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatorySuperiorFields'
 							'inputType'        => 'select',
 							'options'          => array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'lk'),
 							'reference'        => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldOptions'],
-							'eval'             => array('mandatory'=>true, 'style'=>'width: 94%;')
+							'eval'             => array('mandatory'=>true, 'style'=>'width: 100px;')
 					),
 					'superiorFieldValue' => array
 					(
 							'label'            => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatorySuperiorFieldValue'],
 							'exclude'          => true,
 							'inputType'        => 'text',
-							'eval'             => array('mandatory'=>true, 'style'=>'width: 95%;')
+							'eval'             => array('mandatory'=>true, 'style'=>'width: 200px;')
 					)
 			)
-	)
-	
+	),
+	'sql'                     => "blob NULL"
 );
-
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatoryValidationRule'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRule'],
@@ -88,7 +87,8 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatoryValidationRule'
 	'default'                 => '0',
 	'options'                 => array('0', '1'),
 	'reference'               => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryValidationRuleOptions'],
-	'eval'                    => array('mandatory'=>true)
+	'eval'                    => array('mandatory'=>true),
+	'sql'                     => "char(1) NOT NULL default '0'"
 );
 
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatoryEmpty'] = array
@@ -96,7 +96,8 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatoryEmpty'] = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_form_field']['dependentMandatoryEmpty'],
 	'exclude'                 => true,
 	'filter'                  => true,
-	'inputType'               => 'checkbox'
+	'inputType'               => 'checkbox',
+	'sql'                     => "char(1) NOT NULL default ''"
 );
 
 // Palettes

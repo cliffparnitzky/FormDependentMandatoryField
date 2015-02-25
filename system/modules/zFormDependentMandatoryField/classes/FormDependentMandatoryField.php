@@ -1,8 +1,8 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * Copyright (C) 2005-2015
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,22 +21,22 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Cliff Parnitzky 2012
+ * @copyright  Cliff Parnitzky 2012-2015
  * @author     Cliff Parnitzky
- * @package    DependentMandatoryFormField
+ * @package    FormDependentMandatoryField
  * @license    LGPL
  */
 
 /**
- * Class DependentMandatoryFormField
+ * Class FormDependentMandatoryField
  *
- * @copyright  Cliff Parnitzky 2012
+ * @copyright  Cliff Parnitzky 2012-2015
  * @author     Cliff Parnitzky
  */
-class DependentMandatoryFormField extends Backend {
+class FormDependentMandatoryField extends Backend {
 	
-	private static $RULE_ONE = '0';
-	private static $RULE_ALL = '1';
+	const RULE_ONE = '0';
+	const RULE_ALL = '1';
 	
 	/**
 	 * Constructor, initialize the object.
@@ -50,10 +50,10 @@ class DependentMandatoryFormField extends Backend {
 	/**
 	 * Execute Hook: loadFormField to add special classes
 	 */
-	public function loadDependentMandatoryFormField(Widget $objWidget, $strFormId, $arrData) {
+	public function loadDependentMandatoryField(Widget $objWidget, $strFormId, $arrData) {
 		if ($objWidget->dependentMandatoryActive) {
-			$objWidget->class = "dependent";
-			$objWidget->required = true;
+			$objWidget->class = "dependent mandatory";
+
 		}
 		return $objWidget;
 	}
@@ -61,7 +61,7 @@ class DependentMandatoryFormField extends Backend {
 	/**
 	 * Execute Hook: validateFormField to check if the dependent form field is valid
 	 */
-	public function validateDependentMandatoryFormField(Widget $objWidget, $strFormId, $arrData) {
+	public function validateDependentMandatoryField(Widget $objWidget, $strFormId, $arrData) {
 		if ($objWidget->dependentMandatoryActive) {
 			$arrDependentMandatorySuperiorFields = deserialize($objWidget->dependentMandatorySuperiorFields);
 			
@@ -148,14 +148,14 @@ class DependentMandatoryFormField extends Backend {
 			}
 			
 			if ($filledSuperiorFieldsCount > 0 && $widgetValue == null) {
-				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrSuperiorFields) == $filledSuperiorFieldsCount) ||
-					($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE)) {
+				if (($objWidget->dependentMandatoryValidationRule == self::RULE_ALL && count($arrSuperiorFields) == $filledSuperiorFieldsCount) ||
+					($objWidget->dependentMandatoryValidationRule == self::RULE_ONE)) {
 					
 					$objWidget->addError($this->getErrorMessage('dependentMandatoryErrorMandatory', $objWidget, $filledSuperiorFieldsCount, $filledSuperiorFields));
 				}
 			} else if ($objWidget->dependentMandatoryEmpty && $widgetValue != null) {
-				if (($objWidget->dependentMandatoryValidationRule == self::$RULE_ALL && count($arrSuperiorFields) != $filledSuperiorFieldsCount) ||
-					($objWidget->dependentMandatoryValidationRule == self::$RULE_ONE && $filledSuperiorFieldsCount == 0)) {
+				if (($objWidget->dependentMandatoryValidationRule == self::RULE_ALL && count($arrSuperiorFields) != $filledSuperiorFieldsCount) ||
+					($objWidget->dependentMandatoryValidationRule == self::RULE_ONE && $filledSuperiorFieldsCount == 0)) {
 					
 					$objWidget->addError($this->getErrorMessage('dependentMandatoryErrorEmpty', $objWidget, count($arrSuperiorFields), $allSuperiorFields));
 				}

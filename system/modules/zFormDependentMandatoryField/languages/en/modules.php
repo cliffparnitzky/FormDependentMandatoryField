@@ -1,8 +1,8 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2012 Leo Feyer
+ * Copyright (C) 2005-2015 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,16 +21,15 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>. 
  *
  * PHP version 5
- * @copyright  Cliff Parnitzky 2012
+ * @copyright  Cliff Parnitzky 2012-2015
  * @author     Cliff Parnitzky
- * @package    DependentMandatoryFormField
+ * @package    FormDependentMandatoryField
  * @license    LGPL
  */
-
+ 
 /**
- * Hooks
+ * Define name and tooltip for preferences (inactive modules)
  */
-$GLOBALS['TL_HOOKS']['validateFormField'][] = array('DependentMandatoryFormField', 'validateDependentMandatoryFormField');
-$GLOBALS['TL_HOOKS']['loadFormField'][]     = array('DependentMandatoryFormField', 'loadDependentMandatoryFormField');
+$GLOBALS['TL_LANG']['MOD']['zFormDependentMandatoryField'] = 'Adds the option to form fields to be declared as dependent mandatory.';
 
 ?>
