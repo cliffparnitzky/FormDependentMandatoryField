@@ -26,13 +26,15 @@ Compatibility
 -------------
 
 - min. Contao version: >= 3.2.0
-- max. Contao version: <  3.5.0
+- max. Contao version: <  3.6.0
 
 
 Dependency
 ----------
 
-- This extension is dependent on the following extensions: [[menatwork/contao-multicolumnwizard]](https://packagist.org/packages/menatwork/contao-multicolumnwizard)
+This extension is dependent on the following extensions:
+
+- [[menatwork/contao-multicolumnwizard]](https://packagist.org/packages/menatwork/contao-multicolumnwizard)
 
 
 Screenshot
