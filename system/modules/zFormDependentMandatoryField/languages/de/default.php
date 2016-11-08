@@ -30,9 +30,13 @@
 /**
  * Error messages
  */
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorMandatory']['Single']   = 'Das Feld "%s" muss ausgefüllt sein, weil das Feld "%s" einen Wert enthält.';
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorMandatory']['Multiple'] = 'Das Feld "%s" muss ausgefüllt sein, weil die Felder "%s" Werte enthalten.';
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty']['Single']       = 'Das Feld "%s" muss leer sein, weil das Feld "%s" keinen Wert enthält.';
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty']['Multiple']     = 'Das Feld "%s" muss leer sein, weil die Felder "%s" keine Werte enthalten.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorField']['One']    = 'das Feld "%s" %s';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorField']['All']    = '%s und %s';
+
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorValue']['Filled'] = 'einen Wert enthält';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorValue']['Empty']  = 'leer ist';
+
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorMandatory']       = 'Das Feld "%s" muss ausgefüllt sein, weil %s.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty']           = 'Das Feld "%s" muss leer sein, weil %s.';
 
 ?>

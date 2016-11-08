@@ -30,9 +30,13 @@
 /**
  * Error messages
  */
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorMandatory']['Single']   = 'The field "%s" must not be empty, because the field "%s" contains a value.';
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorMandatory']['Multiple'] = 'The field "%s" must not be empty, because the fields "%s" contain values.';
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty']['Single']       = 'The field "%s" must be empty, because the field "%s" contains no value.';
-$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty']['Multiple']     = 'The field "%s" must be empty, because the fields "%s" contain no values.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorField']['One']    = 'the field "%s" %s';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorField']['All']    = '%s and %s';
+
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorValue']['Filled'] = 'contains a value';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorValue']['Empty']  = 'is empty';
+
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorMandatory']       = 'The field "%s" must be filled out, because %s.';
+$GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorEmpty']           = 'The field "%s" must be empty, because %s.';
 
 ?>

@@ -98,7 +98,10 @@ class FormDependentMandatoryField extends Backend {
         // check against rules
         $blnMatched = false;
         
+        $blnIsValueEmpty = false;
+        
         foreach ($values as $value) {
+          $blnIsValueEmpty = ($value == null || strlen($value) == 0);
           foreach ($rules as $rule) {
             if (!$blnMatched) {
               // compare the entered value with the expected value
@@ -135,11 +138,11 @@ class FormDependentMandatoryField extends Backend {
           }
         }
         if ($blnMatched) {
-          $filledSuperiorFields[] = $formFields[$field];
+          $filledSuperiorFields[] = array('fieldName' => $formFields[$field], 'isValueEmpty' => $blnIsValueEmpty);
           $filledSuperiorFieldsCount++;
         }
         
-        $allSuperiorFields[] = $formFields[$field];
+        $allSuperiorFields[] = array('fieldName' => $formFields[$field], 'isValueEmpty' => $blnIsValueEmpty);
       }
       
       $widgetValue = $this->Input->$method($objWidget->name);
@@ -151,7 +154,11 @@ class FormDependentMandatoryField extends Backend {
         if (($objWidget->dependentMandatoryValidationRule == self::RULE_ALL && count($arrSuperiorFields) == $filledSuperiorFieldsCount) ||
           ($objWidget->dependentMandatoryValidationRule == self::RULE_ONE)) {
           
-          $objWidget->addError($this->getErrorMessage('dependentMandatoryErrorMandatory', $objWidget, $filledSuperiorFieldsCount, $filledSuperiorFields));
+          $msgKey = 'dependentMandatoryErrorMandatory';
+          if ($blnHasRuleEmpty) {
+            $msgKey .= 'Empty';
+          }
+          $objWidget->addError($this->getErrorMessage($msgKey, $objWidget, $filledSuperiorFieldsCount, $filledSuperiorFields));
         }
       } else if ($objWidget->dependentMandatoryEmpty && $widgetValue != null) {
         if (($objWidget->dependentMandatoryValidationRule == self::RULE_ALL && count($arrSuperiorFields) != $filledSuperiorFieldsCount) ||
@@ -197,11 +204,17 @@ class FormDependentMandatoryField extends Backend {
    */
   private function getErrorMessage ($msgKey, $objWidget, $superiorFieldsCount, $filledSuperiorFields) {
     if ($superiorFieldsCount > 0) {
-      $singularPluralErrorKey = 'Single';
-      if ($superiorFieldsCount > 1) {
-        $singularPluralErrorKey = 'Multiple';
+      
+      $arrFieldErrorTexts = array();
+      foreach ($filledSuperiorFields as $filledSuperiorField) {
+        $arrFieldErrorTexts[] = sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorField']['One'], $filledSuperiorField['fieldName'], $filledSuperiorField['isValueEmpty'] ? $GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorValue']['Empty'] : $GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorValue']['Filled']);
       }
-      return sprintf($GLOBALS['TL_LANG']['ERR'][$msgKey][$singularPluralErrorKey], $objWidget->label, implode(', ', $filledSuperiorFields));
+      
+      $strLastFieldErrorText = array_pop($arrFieldErrorTexts);
+      
+      $strFieldErrorTexts = sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorField']['All'], implode(', ', $arrFieldErrorTexts), $strLastFieldErrorText);
+      
+      return sprintf($GLOBALS['TL_LANG']['ERR'][$msgKey], $objWidget->label, $strFieldErrorTexts);
     }
     
     return '';
