@@ -27,6 +27,11 @@
  * @license    LGPL
  */
 
+if (TL_MODE == 'BE')
+{
+	$GLOBALS['TL_CSS'][] = 'system/modules/zFormDependentMandatoryField/assets/backend.css';
+} 
+ 
 // Palettes
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'dependentMandatoryActive';
 
@@ -92,6 +97,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatorySuperiorFields'
           )
       )
   ),
+  'explanation'             => 'FormDependentMandatoryFieldRuleValues',
   'sql'                     => "blob NULL"
 );
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatoryValidationRule'] = array
