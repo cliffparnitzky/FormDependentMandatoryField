@@ -3,11 +3,9 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2005-2015 Leo Feyer
+ * Copyright (c) 2005-2016 Leo Feyer
  *
- * @package ZFormDependentMandatoryField
- * @link    https://contao.org
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license LGPL-3.0+
  */
 
 
@@ -16,6 +14,6 @@
  */
 ClassLoader::addClasses(array
 (
-	// Classes
-	'FormDependentMandatoryField' => 'system/modules/zFormDependentMandatoryField/classes/FormDependentMandatoryField.php',
+	// Forms
+	'FormDependentMandatoryField' => 'system/modules/zFormDependentMandatoryField/forms/FormDependentMandatoryField.php',
 ));
