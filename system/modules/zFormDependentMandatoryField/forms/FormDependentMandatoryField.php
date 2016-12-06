@@ -212,7 +212,11 @@ class FormDependentMandatoryField extends Backend {
       
       $strLastFieldErrorText = array_pop($arrFieldErrorTexts);
       
-      $strFieldErrorTexts = sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorField']['All'], implode(', ', $arrFieldErrorTexts), $strLastFieldErrorText);
+      if (!empty($arrFieldErrorTexts)) {
+        $strFieldErrorTexts = sprintf($GLOBALS['TL_LANG']['ERR']['dependentMandatoryErrorField']['All'], implode(', ', $arrFieldErrorTexts), $strLastFieldErrorText);
+      } else {
+        $strFieldErrorTexts = $strLastFieldErrorText;
+      }
       
       return sprintf($GLOBALS['TL_LANG']['ERR'][$msgKey], $objWidget->label, $strFieldErrorTexts);
     }
