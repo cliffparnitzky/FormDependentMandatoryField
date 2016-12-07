@@ -61,8 +61,8 @@ class FormDependentMandatoryField extends Backend {
   /**
    * Execute Hook: validateFormField to check if the dependent form field is valid
    */
-  public function validateDependentMandatoryField(Widget $objWidget, $strFormId, $arrData) {
-    if ($objWidget->dependentMandatoryActive && static::isFormFieldSubmittable($objWidget->type)) {
+  public function validateDependentMandatoryField(\Widget &$objWidget, $strFormId, $arrData) {
+    if ($objWidget->dependentMandatoryActive && static::isFormFieldSubmittable(get_class($objWidget))) {
       $arrDependentMandatorySuperiorFields = deserialize($objWidget->dependentMandatorySuperiorFields);
       
       // collect all conditions for each field
@@ -294,20 +294,19 @@ class FormDependentMandatoryField extends Backend {
   /**
    * Checks if a form field is submittable.
    */
-  public static function isFormFieldSubmittable($strFormFieldName)
+  public static function isFormFieldSubmittable($strWidgetClass)
   {
-    if ($strFormFieldName == 'upload')
-    {
-      // this field is not submittable but should also be usable.
-      return true;
-    }
-    
-    $strWidgetClass = $GLOBALS['TL_FFL'][$strFormFieldName];
     if ($strWidgetClass)
     {
       $objWidget = new $strWidgetClass();
       if ($objWidget)
       {
+        if ($objWidget->type == 'upload')
+        {
+          // this field is not submittable but should also be usable.
+          return true;
+        }
+    
         return $objWidget->submitInput();
       }
     }

@@ -36,7 +36,7 @@ if (TL_MODE == 'BE')
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'dependentMandatoryActive';
 
 foreach ($GLOBALS['TL_DCA']['tl_form_field']['palettes'] as $name=>$palette) {
-  if (FormDependentMandatoryField::isFormFieldSubmittable($name))
+  if (FormDependentMandatoryField::isFormFieldSubmittable($GLOBALS['TL_FFL'][$name]))
   {
     $GLOBALS['TL_DCA']['tl_form_field']['palettes'][$name] = str_replace("{expert_legend:hide}", "{dependentMandatory_legend},dependentMandatoryActive;{expert_legend:hide}", $palette);
   }
