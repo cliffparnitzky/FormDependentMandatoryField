@@ -3,7 +3,7 @@
 	"description":"Provides an additional option for form field to be defined as dependent mandatory. Field is mandatory if another field (or more) is filled / or not.",
 	"keywords":["contao", "form", "form field", "mandatory", "mandatory form field", "dependent mandatory form field"],
 	"type":"contao-module",
-	"license":"LGPL-3.0+",
+	"license":"LGPL-3.0-or-later",
 	"authors":[
 		{
 			"name":"Cliff Parnitzky",
