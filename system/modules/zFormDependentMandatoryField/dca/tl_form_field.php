@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2016 Leo Feyer
+ * Copyright (C) 2005-2020 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Cliff Parnitzky 2012-2016
+ * @copyright  Cliff Parnitzky 2012-2020
  * @author     Cliff Parnitzky
  * @package    FormDependentMandatoryField
  * @license    LGPL
@@ -29,14 +29,14 @@
 
 if (TL_MODE == 'BE')
 {
-	$GLOBALS['TL_CSS'][] = 'system/modules/zFormDependentMandatoryField/assets/backend.css';
-} 
- 
+  $GLOBALS['TL_CSS'][] = 'system/modules/zFormDependentMandatoryField/assets/backend.css';
+}
+
 // Palettes
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'dependentMandatoryActive';
 
 foreach ($GLOBALS['TL_DCA']['tl_form_field']['palettes'] as $name=>$palette) {
-  if (FormDependentMandatoryField::isFormFieldSubmittable($GLOBALS['TL_FFL'][$name]))
+  if (FormDependentMandatoryField::isFormFieldSubmittable($GLOBALS['TL_FFL'][$name]) || $name == 'textdigit')
   {
     $GLOBALS['TL_DCA']['tl_form_field']['palettes'][$name] = str_replace("{expert_legend:hide}", "{dependentMandatory_legend},dependentMandatoryActive;{expert_legend:hide}", $palette);
   }
