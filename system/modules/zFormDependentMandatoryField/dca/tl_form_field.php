@@ -29,10 +29,8 @@
 
 if (TL_MODE == 'BE')
 {
-	$GLOBALS['TL_CSS'][] = 'system/modules/zFormDependentMandatoryField/assets/backend.css';
+  $GLOBALS['TL_CSS'][] = 'system/modules/zFormDependentMandatoryField/assets/backend.css';
 }
-
-$GLOBALS['TL_DCA']['tl_form_field']['config']['onload_callback'][] = array('tl_form_field_FormDependentMandatoryField', 'initPalettes');
 
 // Palettes
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'dependentMandatoryActive';
@@ -123,38 +121,5 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatoryEmpty'] = array
   'inputType'               => 'checkbox',
   'sql'                     => "char(1) NOT NULL default ''"
 );
-
-/**
- * Class tl_form_field_FormDependentMandatoryField
- *
- * Provide miscellaneous methods that are used by the data configuration array.
- * PHP version 5
- * @copyright  Cliff Parnitzky 2020-2020
- * @author     Cliff Parnitzky
- * @package    Controller
- */
-class tl_form_field_FormDependentMandatoryField extends Backend
-{
-  /**
-   * Default constructor
-   */
-  public function __construct()
-  {
-    parent::__construct();
-  }
-
-  /**
-   * Initialize the palettes when loading
-   * @param \DataContainer
-   */
-  public function initPalettes($dc)
-  {
-    if (\Input::get('act') == "edit")
-    {
-      echo $dc->activeRecord->type;
-      //$GLOBALS['TL_DCA']['tl_form']['palettes']['default'] = str_replace(',formID', '', $GLOBALS['TL_DCA']['tl_form']['palettes']['default']);
-    }
-  }
-}
 
 ?>
