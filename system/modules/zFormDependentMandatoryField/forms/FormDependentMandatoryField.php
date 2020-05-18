@@ -306,12 +306,6 @@ class FormDependentMandatoryField extends Backend {
           // this field is not submittable but should also be usable.
           return true;
         }
-        else if ($objWidget->type == 'textdigit')
-        {
-          // this field is new since Contao 4.9 and is specially handled
-          return true;
-        }
-    
         return $objWidget->submitInput();
       }
     }
