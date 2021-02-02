@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'dependentMa
 
 foreach ($GLOBALS['TL_DCA']['tl_form_field']['palettes'] as $name=>$palette) {
   if (!in_array($name, $GLOBALS['TL_FDMF']['EXCLUDED_WIDGET_TYPES']) && 
-      (in_array($name, $GLOBALS['TL_FDMF']['INCLUDED_WIDGET_TYPES']) || FormDependentMandatoryField::isFormFieldSubmittable($GLOBALS['TL_FFL'][$name])))
+      (in_array($name, $GLOBALS['TL_FDMF']['INCLUDED_WIDGET_TYPES']) || FormDependentMandatoryField::isFormFieldSubmittable($name)))
   {
     $GLOBALS['TL_DCA']['tl_form_field']['palettes'][$name] = str_replace("{expert_legend:hide}", "{dependentMandatory_legend},dependentMandatoryActive;{expert_legend:hide}", $palette);
   }
