@@ -78,7 +78,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatorySuperiorFields'
               'exclude'          => true,
               'inputType'        => 'select',
               'options_callback' => array('FormDependentMandatoryField', 'getAllInputFormFields'),
-              'eval'             => array('mandatory'=>true, 'mandatory'=>true, 'style'=>'width: 400px;')
+              'eval'             => array('choosen'=>true, 'mandatory'=>true, 'style'=>'width: 400px;')
           ),
           'superiorFieldCondition' => array
           (
