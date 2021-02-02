@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2016 Leo Feyer
+ * Copyright (C) 2005-2021 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>. 
  *
  * PHP version 5
- * @copyright  Cliff Parnitzky 2012-2016
+ * @copyright  Cliff Parnitzky 2012-2021
  * @author     Cliff Parnitzky
  * @package    FormDependentMandatoryField
  * @license    LGPL
@@ -32,5 +32,11 @@
  */
 $GLOBALS['TL_HOOKS']['validateFormField'][] = array('FormDependentMandatoryField', 'validateDependentMandatoryField');
 $GLOBALS['TL_HOOKS']['loadFormField'][]     = array('FormDependentMandatoryField', 'loadDependentMandatoryField');
+
+/**
+ * Define explicitly excluded and included widget types
+ */
+$GLOBALS['TL_FDMF']['EXCLUDED_WIDGET_TYPES'] = array('fineUploader');
+$GLOBALS['TL_FDMF']['INCLUDED_WIDGET_TYPES'] = array('textdigit');
 
 ?>
