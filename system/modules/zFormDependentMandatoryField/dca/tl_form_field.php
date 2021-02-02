@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2020 Leo Feyer
+ * Copyright (C) 2005-2021 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Cliff Parnitzky 2012-2020
+ * @copyright  Cliff Parnitzky 2012-2021
  * @author     Cliff Parnitzky
  * @package    FormDependentMandatoryField
  * @license    LGPL
@@ -36,7 +36,8 @@ if (TL_MODE == 'BE')
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'dependentMandatoryActive';
 
 foreach ($GLOBALS['TL_DCA']['tl_form_field']['palettes'] as $name=>$palette) {
-  if (FormDependentMandatoryField::isFormFieldSubmittable($GLOBALS['TL_FFL'][$name]) || $name == 'textdigit')
+  if (!in_array($name, $GLOBALS['TL_FDMF']['EXCLUDED_WIDGET_TYPES']) && 
+      (in_array($name, $GLOBALS['TL_FDMF']['INCLUDED_WIDGET_TYPES']) || FormDependentMandatoryField::isFormFieldSubmittable($name)))
   {
     $GLOBALS['TL_DCA']['tl_form_field']['palettes'][$name] = str_replace("{expert_legend:hide}", "{dependentMandatory_legend},dependentMandatoryActive;{expert_legend:hide}", $palette);
   }
@@ -77,7 +78,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['dependentMandatorySuperiorFields'
               'exclude'          => true,
               'inputType'        => 'select',
               'options_callback' => array('FormDependentMandatoryField', 'getAllInputFormFields'),
-              'eval'             => array('mandatory'=>true, 'style'=>'width: 400px;')
+              'eval'             => array('chosen'=>true, 'mandatory'=>true, 'style'=>'width: 400px;')
           ),
           'superiorFieldCondition' => array
           (

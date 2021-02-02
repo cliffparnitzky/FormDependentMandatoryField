@@ -294,14 +294,15 @@ class FormDependentMandatoryField extends Backend {
   /**
    * Checks if a form field is submittable.
    */
-  public static function isFormFieldSubmittable($strWidgetClass)
+  public static function isFormFieldSubmittable($strWidgetName)
   {
-    if ($strWidgetClass)
+    $strWidgetClass = $GLOBALS['TL_FFL'][$strWidgetName];
+    if (!empty($strWidgetClass))
     {
       $objWidget = new $strWidgetClass();
       if ($objWidget)
       {
-        if ($objWidget->type == 'upload')
+        if ($strWidgetName == 'upload')
         {
           // this field is not submittable but should also be usable.
           return true;
