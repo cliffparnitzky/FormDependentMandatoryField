@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2020
+ * Copyright (C) 2005-2021
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Cliff Parnitzky 2012-2020
+ * @copyright  Cliff Parnitzky 2012-2021
  * @author     Cliff Parnitzky
  * @package    FormDependentMandatoryField
  * @license    LGPL
@@ -30,7 +30,7 @@
 /**
  * Class FormDependentMandatoryField
  *
- * @copyright  Cliff Parnitzky 2012-2020
+ * @copyright  Cliff Parnitzky 2012-2021
  * @author     Cliff Parnitzky
  */
 class FormDependentMandatoryField extends Backend {
@@ -62,7 +62,7 @@ class FormDependentMandatoryField extends Backend {
    * Execute Hook: validateFormField to check if the dependent form field is valid
    */
   public function validateDependentMandatoryField(Contao\Widget &$objWidget, $strFormId, $arrData) {
-    if ($objWidget->dependentMandatoryActive && static::isFormFieldSubmittable(get_class($objWidget))) {
+    if ($objWidget->dependentMandatoryActive && static::isFormFieldSubmittable($objWidget->type)) {
       $arrDependentMandatorySuperiorFields = deserialize($objWidget->dependentMandatorySuperiorFields);
       
       // collect all conditions for each field
