@@ -1,0 +1,16 @@
+name: PHP 8.2 Syntax Check
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: PHP Lint
+      uses: StephaneBour/actions-php-lint@8.2
