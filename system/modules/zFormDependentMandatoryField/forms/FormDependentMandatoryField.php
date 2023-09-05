@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2021
+ * Copyright (C) 2005-2023
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  Cliff Parnitzky 2012-2022
+ * @copyright  Cliff Parnitzky 2012-2023
  * @author     Cliff Parnitzky
  * @package    FormDependentMandatoryField
  * @license    LGPL
@@ -30,7 +30,7 @@
 /**
  * Class FormDependentMandatoryField
  *
- * @copyright  Cliff Parnitzky 2012-2022
+ * @copyright  Cliff Parnitzky 2012-2023
  * @author     Cliff Parnitzky
  */
 class FormDependentMandatoryField extends Backend {
@@ -296,18 +296,21 @@ class FormDependentMandatoryField extends Backend {
    */
   public static function isFormFieldSubmittable($strWidgetName)
   {
-    $strWidgetClass = $GLOBALS['TL_FFL'][$strWidgetName];
-    if (!empty($strWidgetClass))
+    if (array_key_exists($strWidgetName, $GLOBALS['TL_FFL']))
     {
-      $objWidget = new $strWidgetClass();
-      if ($objWidget)
+      $strWidgetClass = $GLOBALS['TL_FFL'][$strWidgetName];
+      if (!empty($strWidgetClass))
       {
-        if ($strWidgetName == 'upload')
+        $objWidget = new $strWidgetClass();
+        if ($objWidget)
         {
-          // this field is not submittable but should also be usable.
-          return true;
+          if ($strWidgetName == 'upload')
+          {
+            // this field is not submittable but should also be usable.
+            return true;
+          }
+          return $objWidget->submitInput();
         }
-        return $objWidget->submitInput();
       }
     }
     return false;
