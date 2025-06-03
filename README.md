@@ -59,3 +59,10 @@ label.dependent.mandatory:after {
 With the CSS above, a form like the following will be created:
 
 ![Screenshot 3](screenshot3.jpg)
+
+
+## Thank you
+
+- e-spin Berlin - Ingolf Steinhardt (@zonky2) for the support of development
+- Contao Academy - Christian Feneberg (@contaoacademy) for the support of development
+- leycom - media solutions - Ralph Leyendecker (@leycommediasolutions) for the support of development
