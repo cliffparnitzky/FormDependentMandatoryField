@@ -63,6 +63,6 @@ With the CSS above, a form like the following will be created:
 
 ## Thank you
 
-- e-spin Berlin - Ingolf Steinhardt (@zonky2) for the support of development
-- Contao Academy - Christian Feneberg (@contaoacademy) for the support of development
-- leycom - media solutions - Ralph Leyendecker (@leycommediasolutions) for the support of development
+- e-spin Berlin - Ingolf Steinhardt ([zonky2](https://github.com/zonky2)) for the support of development
+- Contao Academy - Christian Feneberg ([contaoacademy](https://github.com/contaoacademy)) for the support of development
+- leycom - media solutions - Ralph Leyendecker ([leycommediasolutions](https://github.com/leycommediasolutions)) for the support of development
