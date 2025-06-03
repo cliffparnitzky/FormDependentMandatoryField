@@ -9,7 +9,7 @@
 		"mandatory form field",
 		"dependent mandatory form field"
 	],
-	"type": "contao-module",
+	"type": "contao-bundle",
 	"license": "LGPL-3.0-or-later",
 	"authors": [
 		{
@@ -24,22 +24,35 @@
 		"source": "https://github.com/cliffparnitzky/FormDependentMandatoryField"
 	},
 	"require": {
-		"php": ">=5.3",
-		"contao/core-bundle": "~3.2 || ~4.4",
-		"contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
-		"menatwork/contao-multicolumnwizard": "~3.3"
+		"php": "^8.1",
+		"contao/core-bundle": "^5.3",
+		"menatwork/contao-multicolumnwizard-bundle": "~3.6"
 	},
-	"replace": {
-		"contao-legacy/dependentmandatoryformfield": "*"
+	"require-dev": {
+		"contao/manager-plugin": "^2.12"
+	},
+	"autoload": {
+		"psr-4": {
+			"CliffParnitzky\\FormDependentMandatoryField\\": "src/"
+		},
+		"classmap": [
+			"contao/"
+		],
+		"exclude-from-classmap": [
+			"contao/config/",
+			"contao/dca/",
+			"contao/languages/"
+		]
+	},
+	"config": {
+		"allow-plugins": {
+			"contao-components/installer": false,
+			"contao/manager-plugin": false,
+			"contao-community-alliance/composer-plugin": true
+		}
 	},
 	"extra": {
-		"contao": {
-			"sources": {
-				"system/modules/zFormDependentMandatoryField": "system/modules/zFormDependentMandatoryField"
-			}
-		},
-		"branch-alias": {
-			"dev-master": "2.2.x-dev"
-		}
-	}
+		"contao-manager-plugin": "CliffParnitzky\\FormDependentMandatoryField\\ContaoManager\\Plugin"
+	},
+	"version": "3.0.0-dev"
 }
