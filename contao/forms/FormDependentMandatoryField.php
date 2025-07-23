@@ -105,9 +105,9 @@ class FormDependentMandatoryField extends Backend
       foreach ($arrSuperiorFields as $field => $rules)
       {
         $values = array();
-        $fieldValue = System::getContainer()->get('request_stack')->getCurrentRequest()->request->get($field);
+        $fieldValue = System::getContainer()->get('request_stack')->getCurrentRequest()->request->all()[$field] ?? null;
 
-        if ($fieldValue == null && $this->isFormUpload($field, $formData['id']))
+        if ($fieldValue === null && $this->isFormUpload($field, $formData['id']))
         {
           $values[] = System::getContainer()->get('request_stack')->getCurrentRequest()->attributes->get('dependentMandatoryFormFiles')[$field]['name'];
         }
