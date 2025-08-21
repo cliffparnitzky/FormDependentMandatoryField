@@ -53,6 +53,5 @@
 	},
 	"extra": {
 		"contao-manager-plugin": "CliffParnitzky\\FormDependentMandatoryField\\ContaoManager\\Plugin"
-	},
-	"version": "3.0.0-dev"
+	}
 }
